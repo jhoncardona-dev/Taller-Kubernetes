@@ -1,0 +1,21 @@
+name: Publicar imagen Docker
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  desplegar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USER }}
+          password: ${{ secrets.DOCKER_TOKEN }}
+
+      - run: docker build -t ${{ secrets.DOCKER_USER }}/miniblog:latest ./ejercicio
+      - run: docker push ${{ secrets.DOCKER_USER }}/miniblog:latest
